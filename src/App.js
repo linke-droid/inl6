@@ -1,6 +1,6 @@
 import { GiphyFetch } from '@giphy/js-fetch-api'
 import { useState } from 'react'
-import TextList from './components/TextList'
+import GifList from './components/GifList'
 import CountryList from './components/CountryList'
 import Error from './components/Error'
 import axios from 'axios'
@@ -36,7 +36,7 @@ function App() {
     })
   }
 
-  const apiCall = async () => {
+  async function giphyCall() {
     const res = await giphy.animate(text, { limit: 10 })
     setGifs(res.data)
   }
@@ -48,12 +48,11 @@ function App() {
 
     } else {
       countryCall(text)
-      apiCall(text)
+      giphyCall(text)
       setText('')
     }
 
     setError(false)
-
   }
 
   return (
@@ -63,7 +62,7 @@ function App() {
         <input className="form-control-lg" value={text} onChange={handleInput} />
         <button className="btn btn-primary" onClick={handleSubmit}> Search </button>
         <Error isError={error} text="Please enter a search term" />
-        {gifs && <TextList gifs={gifs} />}
+        {gifs && <GifList gifs={gifs} />}
         {country && <CountryList country={country} />}
       </div>
     </>
