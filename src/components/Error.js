@@ -1,4 +1,8 @@
 const Error = (props) => {
+    if (!props.isError) {
+        return null
+    }
+
     return (
         <div className="alert alert-danger" role="alert">
             {props.text}
@@ -6,4 +10,4 @@ const Error = (props) => {
     )
 }
 
-export default Error;
+export default Error

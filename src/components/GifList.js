@@ -1,22 +1,25 @@
-/*
-    Denna komponent ska ta emot en array med gif-objekt som props och rendera ut en lista med dessa.
-    Varje gif-objekt ska renderas ut som en GifItem-komponent.
-*/
-
 const GifList = (props) => {
     const items = props.gifs.map((gif, index) => {
-        return <GifItem url={gif.url} key={index} />
+        return <GifItem gif={gif} key={index} />
     });
 
-    return <div className="text-container">{items}</div>
+    return <div className="container">{items}</div>
 };
 
 const GifItem = (props) => {
     return (
-        <div className="gif-item">
-            <img src={props.url} alt="" />
+        <div className="container d-flex justify-content-center">
+            <div className="row">
+                <div className="col-12">
+                    <ul className="list-group list-group-flush">
+                        <li className="list-group-item">
+                            <img className="img-fluid" src={props.gif.images.original.url} alt="gif" />
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     );
-};
+}
 
 export default GifList;

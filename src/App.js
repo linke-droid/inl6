@@ -1,7 +1,7 @@
 import { GiphyFetch } from '@giphy/js-fetch-api'
 import { useState } from 'react'
-import GifList from './components/GifList'
 import CountryList from './components/CountryList'
+import GifList from './components/GifList'
 import Error from './components/Error'
 import axios from 'axios'
 
@@ -13,8 +13,9 @@ import axios from 'axios'
 const giphy = new GiphyFetch('PM6fXo7XpC2CsGcBMXuf4P9BqLjVHrKT')
 
 /* 
-  Skapar tre stycken states som håller koll på texten som användaren skriver in, arrayen med gifs som hämtas från Giphy API 
+  Skapar fyra stycken states som håller koll på texten som användaren skriver in, arrayen med gifs som hämtas från Giphy API 
   och ett error state som används för att visa felmeddelande om användaren inte skriver in något i sökfältet.
+  och en state som håller koll på arrayen med länder som hämtas från restcountries API.
 */
 
 function App() {
@@ -27,9 +28,8 @@ function App() {
     setText(e.target.value)
   }
 
-  function countryCall(text) {
-    let search = text
-    axios.get(`https://restcountries.com/v3.1/name/${search}`).then((response) => {
+  function countryCall() {
+    axios.get(`https://restcountries.com/v3.1/name/${text}`).then((response) => {
       setCountry(response.data)
     }).catch(error => {
       console.log("Error: " + error.response.data.error + ". No country found")
@@ -37,8 +37,9 @@ function App() {
   }
 
   async function giphyCall() {
-    const res = await giphy.animate(text, { limit: 10 })
+    const res = await giphy.animate(text, { limit: 5 })
     setGifs(res.data)
+    console.log(res.data)
   }
 
   const handleSubmit = (e) => {
@@ -50,21 +51,25 @@ function App() {
       countryCall(text)
       giphyCall(text)
       setText('')
+      setError(false)
     }
 
-    setError(false)
   }
 
   return (
     <>
-      <div className="container">
-        <h1>Search country</h1>
-        <input className="form-control-lg" value={text} onChange={handleInput} />
-        <button className="btn btn-primary" onClick={handleSubmit}> Search </button>
-        <Error isError={error} text="Please enter a search term" />
-        {gifs && <GifList gifs={gifs} />}
-        {country && <CountryList country={country} />}
+      <div className="container d-flex justify-content-center">
+        <div className="row">
+          <div className="col-12">
+            <h3>Search country</h3>
+            <input className="form-control-lg" value={text} onChange={handleInput} />
+            <button className="btn btn-primary m-2" onClick={handleSubmit}>Search</button>
+            <Error isError={error} text="Please enter a search term" />
+          </div>
+        </div>
       </div>
+        {country && <CountryList country={country} />}
+      {gifs && <GifList gifs={gifs} />}
     </>
   );
 }
