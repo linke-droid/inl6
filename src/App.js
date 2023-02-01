@@ -61,7 +61,7 @@ function App() {
       <div className="container d-flex justify-content-center">
         <div className="row">
           <div className="col-12">
-            <h3>Search country</h3>
+            <h3>Search Country</h3>
             <input className="form-control-lg" value={text} onChange={handleInput} />
             <button className="btn btn-primary m-2" onClick={handleSubmit}>Search</button>
             <Error isError={error} text="Please enter a search term" />
